@@ -76,17 +76,18 @@ for i in range(1,num_of_contests+1):
                         file_output.write(element.text)
 
                 driver.back()
-                driver.implicitly_wait(5)
+                driver.implicitly_wait(10)
             except:
                 driver.back()
-                driver.implicitly_wait(5)
+                driver.implicitly_wait(10)
                 
                 continue
 
         driver.back()
-        driver.implicitly_wait(5)
+        driver.implicitly_wait(10)
     except:
         pagination=driver.find_elements_by_class_name('arrow')[-1]
         pagination.click()
+        driver.implicitly_wait(10)
     finally:
         driver.quit()
