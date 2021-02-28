@@ -44,51 +44,55 @@ Path(contest_directory).mkdir(parents=True,exist_ok=True)
 #shift +tab for indenting back
 #tab for indenting forward
 for i in range(1,num_of_problems+1):
-    
-    XPATH='//*[@id="pageContent"]/div[2]/div[6]/table/tbody/tr['+str(i+1)+']/td[1]/a'
-    problem=driver.find_element_by_xpath(XPATH)        
-    c=problem.text
-    problem.click()
-    
-    contest_problem=contest_directory+"/"+c
-    Path(contest_problem).mkdir(parents=True,exist_ok=True)
-    
     try:
-        S=lambda X:driver.execute_script('return document.body.parentNode.scroll'+X)
-        driver.set_window_size(S('Width'),S('Height'))
-        screenshot_dir=contest_problem+'/problem.png'
-        driver.find_element_by_class_name('problemindexholder').screenshot(screenshot_dir)
+        XPATH='//*[@id="pageContent"]/div[2]/div[6]/table/tbody/tr['+str(i+1)+']/td[1]/a'
+        problem=driver.find_element_by_xpath(XPATH)        
+        c=problem.text
+        problem.click()
         
+        contest_problem=contest_directory+"/"+c
+        Path(contest_problem).mkdir(parents=True,exist_ok=True)
         
-        elements=driver.find_elements_by_class_name('input')
-        
-        if len(elements)==1:
-            file_input_loc=contest_problem+'/input.txt'
-            file_input=open(file_input_loc,"w")
-            file_input.write(elements[0].text)
-        else:
-            for element in elements:
-                file_input_loc=contest_problem+'/input'+str(elements.index(element)+1)+'.txt'
+        try:
+            S=lambda X:driver.execute_script('return document.body.parentNode.scroll'+X)
+            driver.set_window_size(S('Width'),S('Height'))
+            screenshot_dir=contest_problem+'/problem.png'
+            driver.find_element_by_class_name('problemindexholder').screenshot(screenshot_dir)
+            
+            
+            elements=driver.find_elements_by_class_name('input')
+            
+            if len(elements)==1:
+                file_input_loc=contest_problem+'/input.txt'
                 file_input=open(file_input_loc,"w")
-                file_input.write(element.text)
+                file_input.write(elements[0].text)
+            else:
+                for element in elements:
+                    file_input_loc=contest_problem+'/input'+str(elements.index(element)+1)+'.txt'
+                    file_input=open(file_input_loc,"w")
+                    file_input.write(element.text)
 
-        elements=driver.find_elements_by_class_name('output')
-        
-        if len(elements) ==1:
-            file_input_loc=contest_problem+'/output.txt'
-            file_input=open(file_input_loc,"w")
-            file_input.write(elements[0].text)
-        else:
-            for element in elements:
-                file_output_loc=contest_problem+'/output'+str(elements.index(element)+1)+'.txt'
-                file_output=open(file_output_loc,"w")
-                file_output.write(element.text)
-        driver.back()
-        driver.implicitly_wait(10)
+            elements=driver.find_elements_by_class_name('output')
+            
+            if len(elements) ==1:
+                file_input_loc=contest_problem+'/output.txt'
+                file_input=open(file_input_loc,"w")
+                file_input.write(elements[0].text)
+            else:
+                for element in elements:
+                    file_output_loc=contest_problem+'/output'+str(elements.index(element)+1)+'.txt'
+                    file_output=open(file_output_loc,"w")
+                    file_output.write(element.text)
+            driver.back()
+            driver.implicitly_wait(10)
+        except:
+            driver.back()
+            driver.implicitly_wait(5)
+            continue
     except:
-        driver.back()
-        driver.implicitly_wait(5)
-        continue
-    
-#driver.quit()
+        pagination=driver.find_elements_by_class_name('arrow')[-1]
+        pagination.click()
+    finally:
+        driver.quit()            
+    #driver.quit()
 
