@@ -1,10 +1,10 @@
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.keys import Keys
-
+PATH="../chromedriver.exe"
 import time
 import re
 import chromedriver_binary
-driver=Chrome()
+driver=Chrome(PATH)
 driver.get("https://moodle.iitd.ac.in/login/index.php")
 
 driver.implicitly_wait(10)
