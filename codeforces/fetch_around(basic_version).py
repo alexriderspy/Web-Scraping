@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver import Chrome
 from string import ascii_uppercase
 from pathlib import Path
-
+PATH="../chromedriver.exe"
 import chromedriver_binary
 import os
 import sys
@@ -14,7 +14,7 @@ def char_range(c1, c2):
 
 options=webdriver.ChromeOptions()
 options.headless=True
-driver = Chrome(options=options)
+driver = Chrome(PATH,options=options)
 
 driver.implicitly_wait(10)
 
