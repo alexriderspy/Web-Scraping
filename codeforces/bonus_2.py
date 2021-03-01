@@ -10,8 +10,6 @@ PATH="../chromedriver.exe"
 import chromedriver_binary
 import os
 import sys
-
-
 options=webdriver.ChromeOptions()
 options.headless=True
 driver = Chrome(PATH,options=options)
